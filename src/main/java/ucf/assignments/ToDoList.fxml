@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<fx:root prefHeight="400.0"
+         prefWidth="600.0"
+         type="AnchorPane"
+         xmlns="http://javafx.com/javafx/16"
+         xmlns:fx="http://javafx.com/fxml/1"
+         fx:controller="ucf.assignments.MainAppController">
+   <children>
+      <MenuBar layoutX="-1.0" layoutY="1.0" prefHeight="26.0" prefWidth="600.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#ToDoListCollector" text="New ToDo List" />
+                  <MenuItem mnemonicParsing="false" onAction="#ToDoListLoader" text="Retrieve ToDo List" />
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Edit">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#ListDelete" text="Delete a List" />
+                  <MenuItem mnemonicParsing="false" onAction="#ToDoListEditor" text="Edit a List" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <TableView layoutX="-1.0" layoutY="27.0" prefHeight="450.0" prefWidth="780.0">
+        <columns>
+          <TableColumn onEditStart="#ToDoListCollector" prefWidth="179.19997560977936" text="Title" />
+          <TableColumn onEditStart="#ToDoListCollector" prefWidth="446.4000549316406" text="Tasks" />
+            <TableColumn onEditStart="#ToDoListCollector" prefWidth="154.39996337890625" text="Due Date" />
+        </columns>
+      </TableView>
+   </children>
+</fx:root>

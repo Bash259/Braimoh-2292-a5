@@ -1,0 +1,48 @@
+@startuml
+
+class MainApp{
+    main()
+    start()
+}
+
+class ToDoListCollector{
+    String Progress
+    String Task
+    String Date
+
+    +getProgress()
+    +setProgress()
+
+    +getTask()
+    +setTask()
+
+    +getDate()
+    +setDate()
+
+}
+class MainAppController{
+    +returnToDoList
+    +returnListItem
+    +returnItemDate
+
+    +AddItem()
+    +ToDoListCollectorGen()
+    +initialize()
+    +buttonRemove()
+    +onEditChanged()
+    +saveAList()
+    +LoadList()
+    +showDone()
+
+}
+
+javafx.Application <|-- MainApp
+
+MainApp <|-- ToDoListfxml
+ToDoListfxml --|> MainAppController
+
+MainAppController <|-- ToDoListCollector
+
+
+
+@enduml
