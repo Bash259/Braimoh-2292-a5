@@ -6,7 +6,10 @@ import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -19,6 +22,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 import static javafx.application.Application.launch;
@@ -79,9 +83,41 @@ public class MainAppController implements Initializable {
     }
 
 
-    public void AddItem(ActionEvent event) {
-        Item item = new Item("$"+ ItemValue.getText() , ItemNumber.getText(),ItemName.getText());
-        list.add(item);
+    public void AddItem(ActionEvent event) throws IOException {
+        if (ItemValue.getText().isEmpty()){
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setHeaderText("Input not valid");
+            errorAlert.setContentText("Enter an Item Value");
+            errorAlert.showAndWait();
+        }else if (!ItemValue.getText().matches("[0-9]+")){
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setHeaderText("Input not valid");
+            errorAlert.setContentText("Non-Integer characters are not allowed. Enter an Integer.");
+            errorAlert.showAndWait();
+        } else if (ItemNumber.getText().isEmpty()){
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setHeaderText("Input not valid");
+            errorAlert.setContentText("Item Serial Number can not be empty enter a serial number.");
+            errorAlert.showAndWait();
+        }else if (!(ItemNumber.getText().length() == 7)){
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setHeaderText("Input not valid");
+            errorAlert.setContentText("Item Serial Number must be seven characters long.");
+            errorAlert.showAndWait();
+        }else if (!ItemNumber.getText().matches("[a-zA-Z0-9 ]+")){
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setHeaderText("Input not valid");
+            errorAlert.setContentText("Item Serial Number can only contain letters and numbers.");
+            errorAlert.showAndWait();
+        } else if (ItemName.getText().isEmpty()){
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setHeaderText("Input not valid");
+            errorAlert.setContentText("Item Name can not be empty enter a name.");
+            errorAlert.showAndWait();
+        }else {
+            Item item = new Item("$" + ItemValue.getText(), ItemNumber.getText(), ItemName.getText());
+            list.add(item);
+        }
     }
 
     public void onEditChanged(TableColumn.CellEditEvent<Item, String> itemStringCellEditEvent) {
@@ -121,7 +157,7 @@ public class MainAppController implements Initializable {
         FileWriter fileWriter = new FileWriter(file);
         fileWriter.write("Value"+"\t"+"Serial Number"+"\t"+"Name\n");
         for (counter = 0;counter < list.size();counter++) {
-            fileWriter.write(listSaver.get(counter).replace(" ","\t")+"\n");
+            fileWriter.write(listSaver.get(counter).replaceAll(" ","\t")+"\n");
         }
         fileWriter.close();
     }
