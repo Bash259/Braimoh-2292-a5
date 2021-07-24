@@ -15,6 +15,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -99,7 +101,7 @@ public class MainAppController implements Initializable {
         list.clear();
     }
 
-    public void PrintList(ActionEvent event) {
+    public void SaveAsTxt(ActionEvent event) throws IOException {
         int counter ;
         ArrayList<String> listSaver = new ArrayList<>();
         for (counter = 0;counter < list.size();counter++){
@@ -116,5 +118,11 @@ public class MainAppController implements Initializable {
         //Show save file dialog
         File file = fileChooser.showSaveDialog(primaryStage);
         primaryStage.show();
+        FileWriter fileWriter = new FileWriter(file);
+        fileWriter.write("Value"+"\t"+"Serial Number"+"\t"+"Name\n");
+        for (counter = 0;counter < list.size();counter++) {
+            fileWriter.write(listSaver.get(counter).replace(" ","\t")+"\n");
+        }
+        fileWriter.close();
     }
 }
