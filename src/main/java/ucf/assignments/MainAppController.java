@@ -16,10 +16,10 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -89,7 +89,7 @@ public class MainAppController implements Initializable {
             errorAlert.setHeaderText("Input not valid");
             errorAlert.setContentText("Enter an Item Value");
             errorAlert.showAndWait();
-        }else if (!ItemValue.getText().matches("[0-9]+")){
+        }else if (!ItemValue.getText().matches("[0-9.]+")){
             Alert errorAlert = new Alert(Alert.AlertType.ERROR);
             errorAlert.setHeaderText("Input not valid");
             errorAlert.setContentText("Non-Integer characters are not allowed. Enter an Integer.");
@@ -113,6 +113,11 @@ public class MainAppController implements Initializable {
             Alert errorAlert = new Alert(Alert.AlertType.ERROR);
             errorAlert.setHeaderText("Input not valid");
             errorAlert.setContentText("Item Name can not be empty enter a name.");
+            errorAlert.showAndWait();
+        }else if (ItemName.getText().length() > 256){
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setHeaderText("Input not valid");
+            errorAlert.setContentText("Item Name can not be more than 256 characters.");
             errorAlert.showAndWait();
         }else {
             Item item = new Item("$" + ItemValue.getText(), ItemNumber.getText(), ItemName.getText());
@@ -141,7 +146,7 @@ public class MainAppController implements Initializable {
         int counter ;
         ArrayList<String> listSaver = new ArrayList<>();
         for (counter = 0;counter < list.size();counter++){
-            String Output = list.get(counter).getItemValue() +" "+ list.get(counter).getItemSerial() +" "+list.get(counter).getItemName();
+            String Output = list.get(counter).getItemValue() +"\t"+ list.get(counter).getItemSerial() +" \t"+list.get(counter).getItemName();
             listSaver.add(Output);
             System.out.println(Output);
         }
@@ -157,8 +162,54 @@ public class MainAppController implements Initializable {
         FileWriter fileWriter = new FileWriter(file);
         fileWriter.write("Value"+"\t"+"Serial Number"+"\t"+"Name\n");
         for (counter = 0;counter < list.size();counter++) {
-            fileWriter.write(listSaver.get(counter).replaceAll(" ","\t")+"\n");
+            fileWriter.write(listSaver.get(counter)+"\n");
         }
         fileWriter.close();
+    }
+
+    public void SaveAsJSON(ActionEvent event) throws IOException {
+        int counter ;
+        JSONArray jsonArray = new JSONArray();
+        for (counter = 0;counter < list.size();counter++){
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("Value",ItemValue.getText());
+            jsonObject.put("Serial Number",ItemNumber.getText());
+            jsonObject.put("Name",ItemName.getText());
+            jsonArray.put(jsonObject);
+        }
+        JSONObject object = new JSONObject();
+        object.put("List",jsonArray);
+
+        FileChooser fileChooser = new FileChooser();
+        Stage primaryStage = new Stage();
+        //Set extension filter for text files
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("JSON files (*.json)", "*.json");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        //Show save file dialog
+        File file = fileChooser.showSaveDialog(primaryStage);
+        primaryStage.show();
+        FileWriter fileWriter = new FileWriter(file);
+        fileWriter.write(object.toString());
+        fileWriter.close();
+    }
+
+    public void LoadAFile(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        Stage primaryStage = new Stage();
+
+        File file = fileChooser.showOpenDialog(primaryStage);
+        primaryStage.show();
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+                String[] split =  line.split("\t");
+                Item item = new Item(split[0],split[1],split[2]);
+                list.add(item);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
