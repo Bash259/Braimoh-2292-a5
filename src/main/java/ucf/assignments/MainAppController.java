@@ -42,10 +42,13 @@ public class MainAppController implements Initializable {
     public TableColumn<Item,String> ItemSerialList;
     public TableColumn<Item,String> ItemNameList;
 
-    private final ObservableList<Item> list = FXCollections.observableArrayList();
+    public final ObservableList<Item> list = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        //Print the table view
+        //Set the rows to the table
+        //Make the table view editable
         ItemValueList.setCellValueFactory(new PropertyValueFactory<>("ItemValue"));
         ItemSerialList.setCellValueFactory(new PropertyValueFactory<>("ItemSerial"));
         ItemNameList.setCellValueFactory(new PropertyValueFactory<>("ItemName"));
@@ -82,67 +85,26 @@ public class MainAppController implements Initializable {
 
     }
 
-
     public void AddItem(ActionEvent event) throws IOException {
-        if (ItemValue.getText().isEmpty()){
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-            errorAlert.setHeaderText("Input not valid");
-            errorAlert.setContentText("Enter an Item Value");
-            errorAlert.showAndWait();
-        }else if (!ItemValue.getText().matches("[0-9.]+")){
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-            errorAlert.setHeaderText("Input not valid");
-            errorAlert.setContentText("Non-Integer characters are not allowed. Enter an Integer.");
-            errorAlert.showAndWait();
-        } else if (ItemNumber.getText().isEmpty()){
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-            errorAlert.setHeaderText("Input not valid");
-            errorAlert.setContentText("Item Serial Number can not be empty enter a serial number.");
-            errorAlert.showAndWait();
-        }else if (!(ItemNumber.getText().length() == 10)){
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-            errorAlert.setHeaderText("Input not valid");
-            errorAlert.setContentText("Item Serial Number must be ten characters long.");
-            errorAlert.showAndWait();
-        }else if (!ItemNumber.getText().matches("[a-zA-Z0-9 ]+")){
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-            errorAlert.setHeaderText("Input not valid");
-            errorAlert.setContentText("Item Serial Number can only contain letters and numbers.");
-            errorAlert.showAndWait();
-        } else if (ItemName.getText().isEmpty()){
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-            errorAlert.setHeaderText("Input not valid");
-            errorAlert.setContentText("Item Name can not be empty enter a name.");
-            errorAlert.showAndWait();
-        }else if (ItemName.getText().length() > 256){
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-            errorAlert.setHeaderText("Input not valid");
-            errorAlert.setContentText("Item Name can not be more than 256 characters.");
-            errorAlert.showAndWait();
-        }else {
-            Item item = new Item("$" + ItemValue.getText(), ItemNumber.getText(), ItemName.getText());
-            list.add(item);
-        }
-    }
-
-    public void onEditChanged(TableColumn.CellEditEvent<Item, String> itemStringCellEditEvent) {
+        AddItem addItem = new AddItem();
+        list.add(addItem.ItemAdder(ItemValue.getText(), ItemNumber.getText(), ItemName.getText()));
     }
 
     public void buttonRemove(javafx.event.ActionEvent actionEvent) {
+        //remove selected item from the list
         int number = PrintTable.getSelectionModel().getSelectedIndex();
-        list.remove(number);
-    }
-
-    public void BackToList(ActionEvent event) {
-
+        RemoveItem removeItem = new RemoveItem();
+        removeItem.ItemRemover(list,number);
     }
 
     public void clearList(ActionEvent event) {
-        ObservableList<Item> allProduct,SingleProduct;
-        list.clear();
+        //Remove all items form the list
+        ClearList clearList = new ClearList();
+        clearList.ListClear(list);
     }
 
     public void SaveAsTxt(ActionEvent event) throws IOException {
+        //Save the list as a txt when the menu item is hit
         int counter ;
         ArrayList<String> listSaver = new ArrayList<>();
         for (counter = 0;counter < list.size();counter++){
@@ -168,6 +130,7 @@ public class MainAppController implements Initializable {
     }
 
     public void SaveAsJSON(ActionEvent event) throws IOException {
+        //Save the list as a JSON when the menu item is hit
         int counter ;
         JSONArray jsonArray = new JSONArray();
         for (counter = 0;counter < list.size();counter++){
@@ -195,6 +158,7 @@ public class MainAppController implements Initializable {
     }
 
     public void LoadAFile(ActionEvent event) {
+        //print selected file to the Table
         FileChooser fileChooser = new FileChooser();
         Stage primaryStage = new Stage();
 
@@ -214,6 +178,7 @@ public class MainAppController implements Initializable {
     }
 
     public void SaveAsHTML(ActionEvent event) throws IOException {
+        //Save the list as a JSON when the menu item is hit
         int counter;
         FileChooser fileChooser = new FileChooser();
         Stage primaryStage = new Stage();

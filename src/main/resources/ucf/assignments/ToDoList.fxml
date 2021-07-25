@@ -38,7 +38,7 @@
       <TableView fx:id="PrintTable" layoutX="-2.0" layoutY="54.0" prefHeight="379.0" prefWidth="842.0">
         <columns>
             <TableColumn fx:id="ItemValueList" prefWidth="75.0" text="Value" />
-          <TableColumn fx:id="ItemSerialList" onEditCommit="#onEditChanged" prefWidth="217.6000213623047" text="Serial Number" />
+          <TableColumn fx:id="ItemSerialList" prefWidth="217.6000213623047" text="Serial Number" />
             <TableColumn fx:id="ItemNameList" prefWidth="548.0000061035156" text="Name" />
         </columns>
       </TableView>

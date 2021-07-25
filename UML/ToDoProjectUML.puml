@@ -5,44 +5,47 @@ class MainApp{
     start()
 }
 
-class ToDoListCollector{
-    String Progress
-    String Task
-    String Date
-
-    +getProgress()
-    +setProgress()
-
-    +getTask()
-    +setTask()
-
-    +getDate()
-    +setDate()
-
+class ClearList{
+    +listCollector
+    +ListClear()
+}
+class AddItem{
+    +ItemAdder()
+    +ValidateInput
+    +PrintErrorMessages
+    +returnItem
+}
+class Item{
+    +Item()
+    +getItemValue
+    +setItemValue
+    +getItemSerial
+    +setItemSerial
+    +getItemName
+    +setItemName
+}
+class RemoveItem{
+    +listCollector
+    +intCollector
+    +ItemRemover()
 }
 class MainAppController{
-    +returnToDoList
-    +returnListItem
-    +returnItemDate
-
-    +AddItem()
-    +ToDoListCollectorGen()
     +initialize()
+    +AddItem()
     +buttonRemove()
-    +onEditChanged()
-    +saveAList()
-    +LoadList()
-    +showDone()
-
+    +clearList()
+    +SaveAsTxt()
+    +SaveAsJSON()
+    +LoadAFile()
+    +SaveAsHTML()
 }
-
 javafx.Application <|-- MainApp
 
-MainApp <|-- ToDoListfxml
-ToDoListfxml --|> MainAppController
-
-MainAppController <|-- ToDoListCollector
-
+MainApp --|> MainAppController
+AddItem --|> MainAppController
+Item --|> AddItem
+ClearList --|> MainAppController
+RemoveItem --|> MainAppController
 
 
 @enduml
