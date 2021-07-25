@@ -24,6 +24,7 @@
                     <items>
                         <MenuItem mnemonicParsing="false" onAction="#SaveAsJSON" text="Save as JSON" />
                       <MenuItem mnemonicParsing="false" onAction="#SaveAsTxt" text="Save as txt" />
+                        <MenuItem mnemonicParsing="false" onAction="#SaveAsHTML" text="Save as HTML" />
                     </items>
                   </Menu>
                   <Menu mnemonicParsing="false" text="Load File">

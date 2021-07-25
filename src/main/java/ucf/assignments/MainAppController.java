@@ -99,10 +99,10 @@ public class MainAppController implements Initializable {
             errorAlert.setHeaderText("Input not valid");
             errorAlert.setContentText("Item Serial Number can not be empty enter a serial number.");
             errorAlert.showAndWait();
-        }else if (!(ItemNumber.getText().length() == 7)){
+        }else if (!(ItemNumber.getText().length() == 10)){
             Alert errorAlert = new Alert(Alert.AlertType.ERROR);
             errorAlert.setHeaderText("Input not valid");
-            errorAlert.setContentText("Item Serial Number must be seven characters long.");
+            errorAlert.setContentText("Item Serial Number must be ten characters long.");
             errorAlert.showAndWait();
         }else if (!ItemNumber.getText().matches("[a-zA-Z0-9 ]+")){
             Alert errorAlert = new Alert(Alert.AlertType.ERROR);
@@ -212,4 +212,50 @@ public class MainAppController implements Initializable {
             e.printStackTrace();
         }
     }
+
+    public void SaveAsHTML(ActionEvent event) throws IOException {
+        int counter;
+        FileChooser fileChooser = new FileChooser();
+        Stage primaryStage = new Stage();
+        //Set extension filter for text files
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("HTML files (*.html)", "*.html");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        //Show save file dialog
+        File file = fileChooser.showSaveDialog(primaryStage);
+        primaryStage.show();
+        FileWriter fileWriter = new FileWriter(file);
+        fileWriter.write("<!DOCTYPE html>\n" +
+                "<html>\n" +
+                "<head>\n" +
+                "<style>\n" +
+                "table, th, td {\n" +
+                "  border: 1px solid black;\n" +
+                "}\n" +
+                "</style>\n" +
+                "</head>\n" +
+                "<body>\n" +
+                "\n" +
+                "<h1>Inventory</h1>\n" +
+                "\n" +
+                "<table>\n" +
+                "  <tr>\n" +
+                "    <th>Item Value</th>\n" +
+                "    <th>Item Serial Number</th>\n" +
+                "    <th>Item Name</th>\n"+
+                "  </tr>\n");
+        for (counter = 0;counter < list.size();counter++) {
+            fileWriter.write("  <tr>\n" +
+                    "    <td>"+list.get(counter).getItemValue()+"</td>\n" +
+                    "    <td>"+list.get(counter).getItemSerial()+"</td>\n" +
+                    "    <td>"+list.get(counter).getItemName()+"</td>\n" +
+                    "  </tr>\n");
+        }
+        fileWriter.write("</table>\n" +
+                "\n" +
+                "</body>\n" +
+                "</html>\n");
+        fileWriter.close();
+    }
+
 }
