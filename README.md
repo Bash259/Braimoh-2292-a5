@@ -26,4 +26,4 @@ Using the search bar, you can easily search for any item that exists in the list
 To save a list, click on the file menu item, then hover the mouse on the "Save file" option and then click the desired option.
 
 #Load a list
-To load a list, click on the file menu item, then hover the mouse on the "Load file" option and then click the desired option. File selection will be necessary to load the list. 
+To load a list, click on the file menu item, then hover the mouse on the "Load file" option and then click the desired option. File selection will be necessary to l****oad the list. 
